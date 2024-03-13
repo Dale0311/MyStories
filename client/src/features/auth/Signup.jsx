@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { X } from 'lucide-react';
 import { useSignupMutation } from './authApiSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -17,6 +18,7 @@ const Signup = () => {
     picture: null,
   });
   const [error, setError] = useState([]);
+  const nav = useNavigate();
   const [signup] = useSignupMutation();
   // check if all of the required states have value
   const canSubmit = [username, email, password].every(Boolean);
@@ -91,7 +93,7 @@ const Signup = () => {
 
   const handleSubmit = async () => {
     if (!canSubmit) {
-      setError((existingError) => {
+      return setError((existingError) => {
         const fieldsRequiredError = existingError.find(
           (e) => e.code === 'fields-required'
         );
@@ -111,7 +113,13 @@ const Signup = () => {
     formData.append('username', username);
     formData.append('email', email);
     formData.append('password', password);
-    await signup(formData);
+    try {
+      await signup(formData).unwrap();
+      nav('/signin');
+    } catch (error) {
+      // handle error
+      setError([{ code: 'email-exist', message: 'email already exist' }]);
+    }
   };
   return (
     <div className="min-h-[100vh] flex justify-center items-center bg-[#F2F2F2]">

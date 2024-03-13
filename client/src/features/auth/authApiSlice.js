@@ -8,6 +8,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: formData,
         method: 'POST',
       }),
+      transformErrorResponse: (err) => {
+        return err?.data?.message;
+      },
     }),
   }),
 });

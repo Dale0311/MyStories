@@ -1,17 +1,14 @@
 import express from 'express';
 import { signupController } from '../controllers/auth.controller.js';
 import multer from 'multer';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import { currentDir } from '../config/dirname.js';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log(currentDir());
-    cb(null, './uploads');
+    cb(null, 'uploads');
   },
   filename: (req, file, cb) => {
-    const filename = file.originalname;
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const filename = `${file.fieldname}-${uniqueSuffix}`;
     cb(null, filename);
   },
 });
