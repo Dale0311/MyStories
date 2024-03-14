@@ -26,7 +26,7 @@ const Signin = () => {
     setError('');
     try {
       const accessToken = await signin({ email, password }).unwrap();
-      setCredentials({ accessToken });
+      dispatch(setCredentials({ accessToken }));
       nav('/');
     } catch (error) {}
   };
