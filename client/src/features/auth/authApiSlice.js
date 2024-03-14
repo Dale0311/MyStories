@@ -12,7 +12,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
         return err?.data?.message;
       },
     }),
+    signin: builder.mutation({
+      query: (creds) => ({
+        url: 'auth/signin',
+        method: 'POST',
+        body: creds,
+      }),
+    }),
   }),
 });
 
-export const { useSignupMutation } = authApiSlice;
+export const { useSignupMutation, useSigninMutation } = authApiSlice;

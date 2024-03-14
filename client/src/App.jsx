@@ -10,6 +10,7 @@ import Layout from './comp/Layout';
 import Post from './features/posts/Post';
 import _404 from './pages/_404';
 import Signup from './features/auth/Signup';
+import Signin from './features/auth/Signin';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,7 +23,8 @@ const router = createBrowserRouter(
         </Route>
       </Route>
       <Route path="signup" element={<Signup />} />
-      <Route path="*" element={<_404 />}></Route>
+      <Route path="signin" element={<Signin />} />
+      <Route path="*" element={<_404 />} />
     </Route>
   )
 );

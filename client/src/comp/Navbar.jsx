@@ -48,6 +48,15 @@ const Navbar = () => {
             {currPath === '/profile' ? <IoPerson /> : <IoPersonOutline />}
             <p>Profile</p>
           </NavLink>
+          <NavLink
+            to={'signin'}
+            className={({ isActive }) =>
+              isActive ? activeClassName : className
+            }
+          >
+            {currPath === '/profile' ? <IoPerson /> : <IoPersonOutline />}
+            <p>Signin</p>
+          </NavLink>
         </div>
       </div>
       <Popover>

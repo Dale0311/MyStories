@@ -1,5 +1,8 @@
 import express from 'express';
-import { signupController } from '../controllers/auth.controller.js';
+import {
+  signinController,
+  signupController,
+} from '../controllers/auth.controller.js';
 import multer from 'multer';
 
 const storage = multer.diskStorage({
@@ -18,4 +21,5 @@ const upload = multer({ storage: storage });
 const router = express.Router();
 
 router.post('/signup', upload.single('file'), signupController);
+router.post('/signin', signinController);
 export default router;
