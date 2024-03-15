@@ -13,15 +13,18 @@ import Signup from './features/auth/Signup';
 import Signin from './features/auth/Signin';
 import Layout from './comp/Layout';
 import RequireAuth from './features/auth/RequireAuth';
+import NoAuthRequire from './features/auth/NoAuthRequire';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Layout />}>
-        <Route path="signup" element={<Signup />} />
-        <Route path="signin" element={<Signin />} />
+        <Route element={<NoAuthRequire />}>
+          <Route path="signup" element={<Signup />} />
+          <Route path="signin" element={<Signin />} />
+        </Route>
 
-        {/* protected routes */}
+        {/* require auth */}
         <Route element={<RequireAuth />}>
           <Route element={<AuthenticatedLayout />}>
             <Route index element={<Home />} />

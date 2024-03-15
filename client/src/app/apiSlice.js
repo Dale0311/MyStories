@@ -4,7 +4,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:5000',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.token;
+    const token = getState().auth?.token?.accessToken;
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
     }
@@ -17,3 +17,5 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({}),
   tagTypes: ['Posts'],
 });
+
+export const { usePrefetch } = apiSlice;
