@@ -14,8 +14,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import useAuth from '@/hooks/useAuth';
 
 const Navbar = () => {
+  const { photoUrl, username, email } = useAuth();
+  console.log(photoUrl);
   const currPath = useLocation().pathname;
   const activeClassName =
     'text-xl bg-slate-100 p-4 group rounded flex items-center space-x-2 font-semibold';
@@ -55,12 +58,12 @@ const Navbar = () => {
           <div className="flex justify-between items-center p-3 hover:bg-slate-200 rounded-full">
             <div className="flex items-center space-x-2">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={photoUrl} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="">
-                <p className="font-semibold text-lg">Dale Cabarle</p>
-                <p className="text-sm text-slate-500">@MrDaleCabarle</p>
+                <p className="font-semibold text-lg">{username}</p>
+                <p className="text-sm text-slate-500">{email}</p>
               </div>
             </div>
             <div className="justify-self-end text-2xl">

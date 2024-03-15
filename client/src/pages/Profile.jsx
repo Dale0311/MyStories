@@ -13,16 +13,17 @@ import {
 } from '@/components/ui/dialog';
 import PostExcerpt from '../features/posts/PostExcerpt';
 import { useGetPostsQuery } from '../features/posts/postSlice';
+import useAuth from '@/hooks/useAuth';
 
 const Profile = () => {
-  const userId = '1daC31dyu67as';
   const { isSuccess, isLoading, data: postsData } = useGetPostsQuery();
+  const { email, _id } = useAuth();
   let content;
   if (isLoading) return (content = <p>Loading...</p>);
   if (isSuccess) {
     const { entities, ids } = postsData;
     const userPostsIds = ids.filter(
-      (postId) => entities[postId].userId === userId
+      (postId) => entities[postId].userId === _id
     );
     content = userPostsIds.map((postId) => (
       <PostExcerpt key={postId} postId={postId} />
@@ -77,7 +78,7 @@ const Profile = () => {
       </div>
 
       {/* posts */}
-      <div>{content ?? ''}</div>
+      <div>{content ?? <p>No post yet</p>}</div>
     </div>
   );
 };

@@ -16,6 +16,7 @@ connectDb();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+app.use();
 
 app.use('/posts', postsRouter);
 app.use('/auth', authRouter);

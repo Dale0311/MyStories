@@ -25,7 +25,7 @@ export const signupController = async (req, res) => {
   const hashedPwd = await bcrypt.hash(password, 10);
   const photoUrl = file
     ? path.normalize(file.path)
-    : path.normalize(path.join(getUploadsDir(), 'default.jpeg'));
+    : path.normalize(path.join('uploads', 'default.jpeg'));
   await User.create({
     username,
     email,

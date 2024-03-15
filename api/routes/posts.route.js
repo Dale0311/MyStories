@@ -11,8 +11,10 @@ import {
   editPost,
   deletePost,
 } from '../controllers/posts.controller.js';
+import { verifyJWT } from '../middleware/verifyJWT.js';
 const router = express.Router();
 
+router.use(verifyJWT);
 router.get('/', getPosts);
 router.post('/', createPost);
 router.get('/:id', getPost, getPostComments);
