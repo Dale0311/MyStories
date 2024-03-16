@@ -18,6 +18,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: creds,
       }),
+      transformErrorResponse: (err) => {
+        return err?.data?.message;
+      },
     }),
   }),
 });

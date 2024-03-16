@@ -18,7 +18,6 @@ import useAuth from '@/hooks/useAuth';
 
 const Navbar = () => {
   const { photoUrl, username, email } = useAuth();
-  console.log(photoUrl);
   const currPath = useLocation().pathname;
   const activeClassName =
     'text-xl bg-slate-100 p-4 group rounded flex items-center space-x-2 font-semibold';
@@ -61,7 +60,7 @@ const Navbar = () => {
                 <AvatarImage src={photoUrl} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <div className="">
+              <div className=" text-start">
                 <p className="font-semibold text-lg">{username}</p>
                 <p className="text-sm text-slate-500">{email}</p>
               </div>

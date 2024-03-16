@@ -28,7 +28,9 @@ const Signin = () => {
       const accessToken = await signin({ email, password }).unwrap();
       dispatch(setCredentials({ accessToken }));
       nav('/');
-    } catch (error) {}
+    } catch (error) {
+      setError(error);
+    }
   };
   return (
     <div className="min-h-[100vh] flex justify-center items-center bg-[#F2F2F2]">

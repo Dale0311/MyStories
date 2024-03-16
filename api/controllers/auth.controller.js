@@ -2,7 +2,6 @@ import path from 'path';
 import bcrypt from 'bcryptjs';
 import User from '../model/Users.model.js';
 import jwt from 'jsonwebtoken';
-import { getUploadsDir } from '../../uploads/getUploadsDir.js';
 
 export const signupController = async (req, res) => {
   const { username, email, password } = req.body;
@@ -16,16 +15,18 @@ export const signupController = async (req, res) => {
 
   // ## if email already exist, response bad request
   const emailExist = await User.findOne({ email: email });
-  if (emailExist)
+  if (emailExist) {
     return res.status(400).json({ message: 'email already exist' });
+  }
 
   // ## if email is new, create new user
 
   // encrypt the given password
   const hashedPwd = await bcrypt.hash(password, 10);
   const photoUrl = file
-    ? path.normalize(file.path)
+    ? path.normalize(path.join('uploads', file.filename))
     : path.normalize(path.join('uploads', 'default.jpeg'));
+
   await User.create({
     username,
     email,
@@ -36,6 +37,7 @@ export const signupController = async (req, res) => {
 };
 
 export const signinController = async (req, res) => {
+  console.log('hey its me');
   const { email, password } = req.body;
   // validate if email and password h`ave value
   if (!email || !password) {
@@ -56,8 +58,13 @@ export const signinController = async (req, res) => {
 
   const { password: pwd, ...data } = userExist._doc;
 
+  // testing
+  const img = data.photoUrl.replace(/\\/g, '/');
+  const photo = `http://localhost:5000/${img}`;
+
   // if the user is pass the authentication
-  const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN, {
+  const d = { ...data, photoUrl: photo };
+  const accessToken = jwt.sign(d, process.env.ACCESS_TOKEN, {
     expiresIn: '30m',
   });
   const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN, {
@@ -68,7 +75,7 @@ export const signinController = async (req, res) => {
   //   _id: new ObjectId('65f1a7bcb5b91a05bded3fd0'),
   //   username: 'p',
   //   email: 'p',
-  //   photoUrl: 'C:\\Users\\dannt\\Desktop\\MyStories\\uploads\\default.jpeg',
+  //   photoUrl: 'C:\Users\\dannt\Desktop\MyStories\uploads\default.jpeg',
   //   createdAt: 2024-03-13T13:18:52.730Z,
   //   updatedAt: 2024-03-13T13:18:52.730Z,
   //   __v: 0

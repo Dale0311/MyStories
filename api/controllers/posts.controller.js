@@ -11,7 +11,6 @@ export const getPosts = async (req, res) => {
   }
 };
 export const getPost = async (req, res, next) => {
-  console.log(req.currentUser);
   const { id } = req.params;
   if (!id) return res.sendStatus(400);
 
