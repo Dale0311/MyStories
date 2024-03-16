@@ -12,13 +12,16 @@ import { formatCommentDate } from '@/src/utils/formatDate';
 
 const PostExcerpt = ({ postId }) => {
   const { data: post, isSuccess } = useGetPostQuery(postId);
+
   const nav = useNavigate();
   const [interactToPost] = useInteractToPostMutation();
   const userId = 'dambo';
   let heartReact;
   let commentsCount;
   let timeAgo;
+
   if (isSuccess) {
+    console.log(post);
     const createdAt = post.createdAt;
     timeAgo = formatCommentDate(createdAt);
     const likeCounts = post.likes.length;

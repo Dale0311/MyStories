@@ -36,8 +36,8 @@ Bugs:
 3. TBA
 
 - create authSlice na ako <b>DONE</b>
-- refactor routes
-
+- refactor routes <b>DONE</b>
+- refactor post excerpt
 ##### notes:
 
 dummy names are in <br>

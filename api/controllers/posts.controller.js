@@ -1,5 +1,6 @@
 import Comment from '../model/Comments.model.js';
 import Post from '../model/Posts.model.js';
+import User from '../model/Users.model.js';
 
 // CRUD ON POST
 export const getPosts = async (req, res) => {
@@ -16,7 +17,15 @@ export const getPost = async (req, res, next) => {
 
   try {
     const post = await Post.findOne({ _id: id });
-    req.post = post;
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+
+    //create a validation
+    const user = await User.findOne({ _id: post.userId }).select(
+      'username email photoUrl'
+    );
+    console.log(user);
+    req.post = { ...post._doc, userInfo: { ...user._doc } };
+    // req.post = post;
     next();
   } catch (error) {
     res.sendStatus(500);
@@ -109,9 +118,8 @@ export const commentOnPost = async (req, res) => {
 export const getPostComments = async (req, res) => {
   const post = req.post;
   const { id } = req.params;
-
   const comments = await Comment.find({ postId: id }).sort({ createdAt: -1 });
-  res.json({ ...post?._doc, comments });
+  res.json({ ...post, comments });
 };
 
 export const editCommentOnPost = async (req, res) => {

@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useCreatePostMutation } from './postSlice';
+import useAuth from '@/hooks/useAuth';
 const WritePost = () => {
+  const { _id, photoUrl } = useAuth();
+
   const [post, setPost] = useState('');
   const [createPost] = useCreatePostMutation();
 
-  const userId = 'ponga';
   const onClickHandlerForCreatePost = async () => {
-    await createPost({ content: post, userId });
+    await createPost({ content: post, userId: _id });
     setPost('');
   };
   return (
     <div className=" p-4 space-y-4">
       <div className="flex space-x-2">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={photoUrl} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <textarea
