@@ -66,14 +66,16 @@ const PostExcerpt = ({ postId }) => {
     >
       <div>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage
+            src={post?.userInfo?.photoUrl || 'https://github.com/shadcn.png'}
+          />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>
       <div className="space-y-1">
         <div className="space-x-1 flex items-center">
-          <p className="font-semibold text-lg">Dale Cabarle</p>
-          <p className="text-sm text-slate-500">@MrDaleCabarle</p>
+          <p className="font-semibold text-lg">{post?.userInfo?.username}</p>
+          <p className="text-sm text-slate-500">{post?.userInfo?.email}</p>
           <p className="text-sm text-slate-500">· {timeAgo}</p>
         </div>
         {post?.content ? (

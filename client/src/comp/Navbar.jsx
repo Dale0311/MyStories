@@ -18,6 +18,7 @@ import useAuth from '@/hooks/useAuth';
 
 const Navbar = () => {
   const { photoUrl, username, email } = useAuth();
+  console.log(photoUrl);
   const currPath = useLocation().pathname;
   const activeClassName =
     'text-xl bg-slate-100 p-4 group rounded flex items-center space-x-2 font-semibold';

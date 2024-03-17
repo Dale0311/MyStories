@@ -23,10 +23,11 @@ export const signupController = async (req, res) => {
 
   // encrypt the given password
   const hashedPwd = await bcrypt.hash(password, 10);
-  const photoUrl = file
-    ? path.normalize(path.join('uploads', file.filename))
+  const photoPath = file
+    ? path.normalize(path.join('uploads', `file.filename`))
     : path.normalize(path.join('uploads', 'default.jpeg'));
 
+  const photoUrl = `http://localhost:5000/${photoPath}`;
   await User.create({
     username,
     email,
@@ -57,14 +58,18 @@ export const signinController = async (req, res) => {
   }
 
   const { password: pwd, ...data } = userExist._doc;
-
+  
+  
+  dito nako
+  refactor photoUrlPath
   // testing
-  const img = data.photoUrl.replace(/\\/g, '/');
-  const photo = `http://localhost:5000/${img}`;
+  // const img = data.photoUrl.replace(/\\/g, '/');
+  // const photo = `http://localhost:5000/${img}`;
 
   // if the user is pass the authentication
-  const d = { ...data, photoUrl: photo };
-  const accessToken = jwt.sign(d, process.env.ACCESS_TOKEN, {
+  // const userInfo = { ...data, photoUrl: photo };
+  console.log();
+  const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN, {
     expiresIn: '30m',
   });
   const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN, {
