@@ -15,19 +15,17 @@ const PostExcerpt = ({ postId }) => {
 
   const nav = useNavigate();
   const [interactToPost] = useInteractToPostMutation();
-  const userId = 'dambo';
   let heartReact;
   let commentsCount;
   let timeAgo;
 
   if (isSuccess) {
-    console.log(post);
     const createdAt = post.createdAt;
     timeAgo = formatCommentDate(createdAt);
     const likeCounts = post.likes.length;
     commentsCount = post.comments.length;
     const userLikeThePost = post.likes.findIndex(
-      (likeUserId) => likeUserId === userId
+      (likeUserId) => likeUserId === post.userId
     );
     if (userLikeThePost === -1) {
       heartReact = (
@@ -52,7 +50,7 @@ const PostExcerpt = ({ postId }) => {
 
   const handleClickLike = async (e) => {
     e.stopPropagation();
-    await interactToPost({ postId, userId });
+    await interactToPost({ postId, userId: post.userId });
   };
 
   const handleClickNav = () => {

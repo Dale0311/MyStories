@@ -18,18 +18,18 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  PopoverClose,
 } from '@/components/ui/popover';
 import EditPopover from '@/src/comp/EditPopover';
 import DeletePopover from '@/src/comp/DeletePopover';
+import useAuth from '@/hooks/useAuth';
 
 const Post = () => {
   const { postId } = useParams();
+  const { _id: userId, photoUrl, username, email } = useAuth();
   const [interactToPost] = useInteractToPostMutation();
   const nav = useNavigate();
   const popOverRef = useRef(null);
   // this is coming from userSlice
-  const userId = 'ponga';
 
   // validation for postID
   if (!postId) return nav('/');
@@ -100,14 +100,14 @@ const Post = () => {
         <div className="flex space-x-2">
           <div>
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={photoUrl} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
           <div className="space-y-2">
             <div className="space-x-1 flex items-center">
-              <Link className="font-semibold text-lg">Dale Cabarle</Link>
-              <Link className="text-sm text-slate-500">@MrDaleCabarle</Link>
+              <Link className="font-semibold text-lg">{username}</Link>
+              <Link className="text-sm text-slate-500">{email}</Link>
             </div>
             {post?.content ? <p className="text-lg">{post.content}</p> : null}
             {post?.createdAt ? (
@@ -168,7 +168,11 @@ const Post = () => {
       </div>
 
       {/* post your reply */}
-      <PostComment postId={postId} userId={userId} />
+      <PostComment
+        postId={postId}
+        userId={userId}
+        photoUrl={post.userInfo.photoUrl}
+      />
 
       {/* comments */}
       {commentsOnPost}

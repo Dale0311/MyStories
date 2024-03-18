@@ -27,7 +27,9 @@ export const signupController = async (req, res) => {
     ? path.normalize(path.join('uploads', `file.filename`))
     : path.normalize(path.join('uploads', 'default.jpeg'));
 
-  const photoUrl = `http://localhost:5000/${photoPath}`;
+  // replace all backslash(\) to forwardslash(/)
+  const img = photoPath.replace(/\\/g, '/');
+  const photoUrl = `http://localhost:5000/${img}`;
   await User.create({
     username,
     email,
@@ -58,13 +60,6 @@ export const signinController = async (req, res) => {
   }
 
   const { password: pwd, ...data } = userExist._doc;
-  
-  
-  dito nako
-  refactor photoUrlPath
-  // testing
-  // const img = data.photoUrl.replace(/\\/g, '/');
-  // const photo = `http://localhost:5000/${img}`;
 
   // if the user is pass the authentication
   // const userInfo = { ...data, photoUrl: photo };

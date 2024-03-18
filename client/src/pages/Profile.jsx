@@ -17,7 +17,7 @@ import useAuth from '@/hooks/useAuth';
 
 const Profile = () => {
   const { isSuccess, isLoading, data: postsData } = useGetPostsQuery();
-  const { email, _id } = useAuth();
+  const { email, _id, photoUrl, username } = useAuth();
   let content;
   if (isLoading) return (content = <p>Loading...</p>);
   if (isSuccess) {
@@ -42,14 +42,14 @@ const Profile = () => {
       <div>
         <div className="flex items-center space-x-2 p-4">
           <Avatar className="h-28 w-28">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={photoUrl ?? 'https://github.com/shadcn.png'} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
             <h2 className="scroll-m-20 text-3xl font-bold tracking-tight first:mt-0">
-              Dale Pogi
+              {username}
             </h2>
-            <p className="text-slate-500">@MrDaleCabarle</p>
+            <p className="text-slate-500">{email}</p>
           </div>
           <div className="flex-1 flex justify-end">
             <Dialog>

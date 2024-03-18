@@ -23,7 +23,6 @@ export const getPost = async (req, res, next) => {
     const user = await User.findOne({ _id: post.userId }).select(
       'username email photoUrl'
     );
-    console.log(user);
     req.post = { ...post._doc, userInfo: { ...user._doc } };
     // req.post = post;
     next();
@@ -119,7 +118,21 @@ export const getPostComments = async (req, res) => {
   const post = req.post;
   const { id } = req.params;
   const comments = await Comment.find({ postId: id }).sort({ createdAt: -1 });
-  res.json({ ...post, comments });
+  const commentsWithUserInfo = await Promise.all(
+    comments.map(async (comment) => {
+      const userInfo = await User.findOne({ _id: comment.userId }).select(
+        'username email photoUrl'
+      );
+      return userInfo
+        ? { ...comment.toObject(), userInfo }
+        : comment.toObject();
+    })
+  );
+
+  // console.log(commentsWithUserInfo);
+  // console.log('------------');
+  console.log({ ...post, ...commentsWithUserInfo });
+  res.json({ ...post, comments: commentsWithUserInfo });
 };
 
 export const editCommentOnPost = async (req, res) => {

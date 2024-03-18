@@ -14,7 +14,6 @@ import DeletePopover from '@/src/comp/DeletePopover';
 
 const Comment = ({ postId, comment, currentUserId, postUserId }) => {
   const popOverRef = useRef(null);
-
   const updatedAt = comment.updatedAt;
   const timeAgo = formatCommentDate(updatedAt);
 
@@ -22,15 +21,15 @@ const Comment = ({ postId, comment, currentUserId, postUserId }) => {
     <div className="p-4 flex max-w-full cursor-pointer space-x-2 hover:bg-slate-100 border-t whitespace-normal text-wrap">
       <div>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={comment.userInfo.photoUrl} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>
       {/* if needed i can treat comment as a post aswell */}
       <div to={`/profile/posts/${postId}`} className="space-y-1">
         <div className="space-x-1 flex items-center">
-          <p className="font-semibold text-lg">Dale Cabarle</p>
-          <p className="text-sm text-slate-500">@MrDaleCabarle</p>
+          <p className="font-semibold text-lg">{comment.userInfo.username}</p>
+          <p className="text-sm text-slate-500">{comment.userInfo.email}</p>
           <p className="text-sm text-slate-500">· {timeAgo}</p>
         </div>
 

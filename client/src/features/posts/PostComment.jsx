@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useCommentOnPostMutation } from '../comments/commentSlice';
 
-const PostComment = ({ postId, userId }) => {
+const PostComment = ({ postId, userId, photoUrl }) => {
   const [comment, setComment] = useState('');
   const [commentOnPostMutation] = useCommentOnPostMutation();
   const canSave = Boolean(comment);
@@ -14,7 +14,7 @@ const PostComment = ({ postId, userId }) => {
   return (
     <div className="p-4 flex space-x-4">
       <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarImage src={photoUrl} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
 
