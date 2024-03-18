@@ -110,7 +110,7 @@ export const commentOnPost = async (req, res) => {
     await Comment.create(newComment);
     res.sendStatus(201);
   } catch (error) {
-    console.log(error);
+    res.sendStatus(500);
   }
 };
 
@@ -131,7 +131,6 @@ export const getPostComments = async (req, res) => {
 
   // console.log(commentsWithUserInfo);
   // console.log('------------');
-  console.log({ ...post, ...commentsWithUserInfo });
   res.json({ ...post, comments: commentsWithUserInfo });
 };
 

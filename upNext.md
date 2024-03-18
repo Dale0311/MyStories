@@ -37,7 +37,9 @@ Bugs:
 
 - create authSlice na ako <b>DONE</b>
 - refactor routes <b>DONE</b>
-- refactor post excerpt
+- refactor post excerpt <b>DONE</b>
+- refactor bug current user
+
 ##### notes:
 
 dummy names are in <br>

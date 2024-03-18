@@ -32,6 +32,7 @@ const Signin = () => {
       setError(error);
     }
   };
+  console.log(error);
   return (
     <div className="min-h-[100vh] flex justify-center items-center bg-[#F2F2F2]">
       <div className="bg-white p-4 rounded w-1/4 space-y-2">

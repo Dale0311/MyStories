@@ -60,7 +60,6 @@ const Post = () => {
     const userLikeThePost = post.likes.findIndex(
       (likeUserId) => likeUserId === userId
     );
-
     if (userLikeThePost === -1) {
       heartReact = (
         <>
@@ -100,14 +99,18 @@ const Post = () => {
         <div className="flex space-x-2">
           <div>
             <Avatar>
-              <AvatarImage src={photoUrl} />
+              <AvatarImage src={post.userInfo.photoUrl} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
           <div className="space-y-2">
             <div className="space-x-1 flex items-center">
-              <Link className="font-semibold text-lg">{username}</Link>
-              <Link className="text-sm text-slate-500">{email}</Link>
+              <Link className="font-semibold text-lg">
+                {post.userInfo.username}
+              </Link>
+              <Link className="text-sm text-slate-500">
+                {post.userInfo.email}
+              </Link>
             </div>
             {post?.content ? <p className="text-lg">{post.content}</p> : null}
             {post?.createdAt ? (
@@ -168,11 +171,7 @@ const Post = () => {
       </div>
 
       {/* post your reply */}
-      <PostComment
-        postId={postId}
-        userId={userId}
-        photoUrl={post.userInfo.photoUrl}
-      />
+      <PostComment postId={postId} userId={userId} photoUrl={photoUrl} />
 
       {/* comments */}
       {commentsOnPost}

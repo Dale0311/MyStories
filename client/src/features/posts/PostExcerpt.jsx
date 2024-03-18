@@ -9,8 +9,10 @@ import {
   useInteractToPostMutation,
 } from './postSlice';
 import { formatCommentDate } from '@/src/utils/formatDate';
+import useAuth from '@/hooks/useAuth';
 
 const PostExcerpt = ({ postId }) => {
+  const { _id: userId } = useAuth();
   const { data: post, isSuccess } = useGetPostQuery(postId);
 
   const nav = useNavigate();
@@ -25,7 +27,7 @@ const PostExcerpt = ({ postId }) => {
     const likeCounts = post.likes.length;
     commentsCount = post.comments.length;
     const userLikeThePost = post.likes.findIndex(
-      (likeUserId) => likeUserId === post.userId
+      (likeUserId) => likeUserId === userId
     );
     if (userLikeThePost === -1) {
       heartReact = (

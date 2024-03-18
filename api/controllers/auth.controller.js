@@ -20,11 +20,10 @@ export const signupController = async (req, res) => {
   }
 
   // ## if email is new, create new user
-
   // encrypt the given password
   const hashedPwd = await bcrypt.hash(password, 10);
   const photoPath = file
-    ? path.normalize(path.join('uploads', `file.filename`))
+    ? path.normalize(path.join('uploads', `${file.filename}`))
     : path.normalize(path.join('uploads', 'default.jpeg'));
 
   // replace all backslash(\) to forwardslash(/)
@@ -40,7 +39,6 @@ export const signupController = async (req, res) => {
 };
 
 export const signinController = async (req, res) => {
-  console.log('hey its me');
   const { email, password } = req.body;
   // validate if email and password h`ave value
   if (!email || !password) {
@@ -54,38 +52,41 @@ export const signinController = async (req, res) => {
   }
 
   // check if the input password is equal to the password of the queried email
-  const match = await bcrypt.compare(password, userExist.password);
-  if (!match) {
-    return res.status(404).json({ meesage: 'email or password is incorrect' });
-  }
+  bcrypt.compare(password, userExist.password, (err, success) => {
+    if (!success) {
+      return res
+        .status(401)
+        .json({ message: 'email or password is incorrect' });
+    }
 
-  const { password: pwd, ...data } = userExist._doc;
+    // if match
+    const { password: pwd, ...data } = userExist._doc;
 
-  // if the user is pass the authentication
-  // const userInfo = { ...data, photoUrl: photo };
-  console.log();
-  const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN, {
-    expiresIn: '30m',
+    // if the user is pass the authentication
+    // const userInfo = { ...data, photoUrl: photo };
+    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN, {
+      expiresIn: '30m',
+    });
+    const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN, {
+      expiresIn: '3d',
+    });
+
+    //data = {
+    //   _id: new ObjectId('65f1a7bcb5b91a05bded3fd0'),
+    //   username: 'p',
+    //   email: 'p',
+    //   photoUrl: 'C:\Users\\dannt\Desktop\MyStories\uploads\default.jpeg',
+    //   createdAt: 2024-03-13T13:18:52.730Z,
+    //   updatedAt: 2024-03-13T13:18:52.730Z,
+    //   __v: 0
+    // }
+    res
+      .cookie('jwt', refreshToken, {
+        httpOnly: true,
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+        sameSite: 'None',
+        secure: true,
+      })
+      .json({ accessToken });
   });
-  const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN, {
-    expiresIn: '3d',
-  });
-
-  //data = {
-  //   _id: new ObjectId('65f1a7bcb5b91a05bded3fd0'),
-  //   username: 'p',
-  //   email: 'p',
-  //   photoUrl: 'C:\Users\\dannt\Desktop\MyStories\uploads\default.jpeg',
-  //   createdAt: 2024-03-13T13:18:52.730Z,
-  //   updatedAt: 2024-03-13T13:18:52.730Z,
-  //   __v: 0
-  // }
-  res
-    .cookie('jwt', refreshToken, {
-      httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
-      sameSite: 'None',
-      secure: true,
-    })
-    .json({ accessToken });
 };
