@@ -10,6 +10,7 @@ import { useSignupMutation } from './authApiSlice';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  // states
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,9 +21,11 @@ const Signup = () => {
   const [error, setError] = useState([]);
   const nav = useNavigate();
   const [signup] = useSignupMutation();
+
   // check if all of the required states have value
   const canSubmit = [username, email, password].every(Boolean);
 
+  // using react-dropzone
   const { getRootProps, getInputProps, isDragActive, isDragReject } =
     useDropzone({
       accept: {
@@ -83,6 +86,7 @@ const Signup = () => {
       },
     });
 
+  // handle click for removing picture
   const handleRemoveInputPicture = () => {
     setError([]);
     setFile({
@@ -91,12 +95,17 @@ const Signup = () => {
     });
   };
 
+  // handle submit the data to specific endpoint
   const handleSubmit = async () => {
+    // if all or one of the fields doesn't have any value.
     if (!canSubmit) {
       return setError((existingError) => {
+        // find the fieldsRequire error if existing
         const fieldsRequiredError = existingError.find(
           (e) => e.code === 'fields-required'
         );
+
+        // if fieldsRequire exist then return the current error state, else append the fieldsRequire error.
         return fieldsRequiredError
           ? [...existingError]
           : [
@@ -121,12 +130,15 @@ const Signup = () => {
       setError([{ code: 'email-exist', message: 'email already exist' }]);
     }
   };
+
   return (
     <div className="min-h-[100vh] flex justify-center items-center bg-[#F2F2F2]">
       <div className="bg-white p-4 rounded w-1/4 space-y-2">
         <h1 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
           Create new account
         </h1>
+
+        {/* Inputs */}
         <div className="space-y-4">
           <div className="grid w-full items-center gap-1.5">
             <Input

@@ -35,19 +35,22 @@ Bugs:
 2. naming params and args should be consistent in slice <b>DONE</b>
 3. TBA
 
-- create authSlice na ako <b>DONE</b>
-- refactor routes <b>DONE</b>
-- refactor post excerpt <b>DONE</b>
-- refactor bug current user
-
-##### notes:
-
-dummy names are in <br>
-@writepost <br>
-@post
-
 ##### future refactors
 
 1. sign up
 
 - error state. there's a lot of repetition of logic
+
+### Upnext:
+
+- create authSlice na ako <b>DONE: 3/12/2024</b>
+- refactor routes <b>DONE: 3/14/2024</b>
+- refactor post excerpt <b>DONE: 3/17/2024</b>
+- refactor bug current user <b>DONE: 3/18/2024</b>
+
+- fix all navigation btns <b>DONE: 3/20/2024</b>
+- fix number of posts shown in profile. make it the number of actual posts of the user
+- make profile route dynamic
+  1. create endpoint for getUser (get all posts base on the user )
+  2. refactor the profile component
+- make user able to like comment and reply to comment

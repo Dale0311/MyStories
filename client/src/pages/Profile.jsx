@@ -32,7 +32,10 @@ const Profile = () => {
   return (
     <div>
       <div className="flex">
-        <Link className=" rounded-full flex items-center space-x-2 p-4 hover:underline">
+        <Link
+          className=" rounded-full flex items-center space-x-2 p-4 hover:underline"
+          to={'/'}
+        >
           <FaArrowLeft />
           <p className="font-semibold text-lg">Go back</p>
         </Link>
