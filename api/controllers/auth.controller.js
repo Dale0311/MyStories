@@ -97,3 +97,9 @@ export const signoutController = async (req, res) => {
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
   res.status(200).json({ message: 'cookie cleared' });
 };
+
+export const getUser = async (req, res) => {
+  const { email } = req.params;
+  const user = await User.findOne({ email }).select('-password');
+  res.json(user._doc);
+};

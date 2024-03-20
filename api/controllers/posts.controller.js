@@ -24,7 +24,6 @@ export const getPost = async (req, res, next) => {
       'username email photoUrl'
     );
     req.post = { ...post._doc, userInfo: { ...user._doc } };
-    // req.post = post;
     next();
   } catch (error) {
     res.sendStatus(500);
@@ -129,8 +128,6 @@ export const getPostComments = async (req, res) => {
     })
   );
 
-  // console.log(commentsWithUserInfo);
-  // console.log('------------');
   res.json({ ...post, comments: commentsWithUserInfo });
 };
 

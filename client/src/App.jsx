@@ -28,7 +28,7 @@ const router = createBrowserRouter(
         <Route element={<RequireAuth />}>
           <Route element={<AuthenticatedLayout />}>
             <Route index element={<Home />} />
-            <Route path="profile">
+            <Route path=":email">
               <Route index element={<Profile />} />
               <Route path="posts/:postId" element={<Post />} />
             </Route>

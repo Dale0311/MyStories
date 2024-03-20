@@ -90,7 +90,7 @@ const Post = () => {
       <div className="flex">
         <Link
           className="rounded-full flex items-center space-x-2 p-4 hover:underline"
-          to={'/profile'}
+          to={'/'}
         >
           <FaArrowLeft />
           <p className="font-semibold text-lg">Post</p>

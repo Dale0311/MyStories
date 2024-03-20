@@ -28,8 +28,18 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
       }),
     }),
+    getUser: builder.query({
+      query: (email) => ({
+        url: `/auth/${email}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useSignupMutation, useSigninMutation, useSignoutMutation } =
-  authApiSlice;
+export const {
+  useSignupMutation,
+  useSigninMutation,
+  useSignoutMutation,
+  useGetUserQuery,
+} = authApiSlice;

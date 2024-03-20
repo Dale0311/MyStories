@@ -54,7 +54,7 @@ const Navbar = () => {
             <p>Home</p>
           </NavLink>
           <NavLink
-            to={'profile'}
+            to={email}
             className={({ isActive }) =>
               isActive ? activeClassName : className
             }

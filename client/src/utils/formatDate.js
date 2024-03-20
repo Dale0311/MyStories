@@ -29,7 +29,31 @@ export function formatDateTime(input) {
   const year = inputDate.getFullYear();
   const formattedDate = `${month} ${day}, ${year}`;
 
-  return `${formattedTime} os ${formattedDate}`;
+  return `${formattedTime} on ${formattedDate}`;
+}
+export function formatJoinedDateTime(input) {
+  const inputDate = new Date(input);
+  // Format date
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  const month = months[inputDate.getMonth()];
+  const day = inputDate.getDate();
+  const year = inputDate.getFullYear();
+  const formattedDate = `${month} ${year}`;
+
+  return formattedDate;
 }
 
 export function formatCommentDate(inputDateTime) {

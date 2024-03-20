@@ -56,22 +56,27 @@ const PostExcerpt = ({ postId }) => {
   const handleClickNav = () => {
     nav(`/profile/posts/${postId}`);
   };
+  const handleClickProfile = (e) => {
+    e.stopPropagation();
+    nav(post?.userInfo?.email);
+  };
 
   return (
     <div
       className="p-4 flex cursor-pointer space-x-2 hover:bg-slate-100 border-t"
       onClick={handleClickNav}
     >
-      <div>
+      <div onClick={handleClickProfile}>
         <Avatar>
-          <AvatarImage
-            src={post?.userInfo?.photoUrl || 'https://github.com/shadcn.png'}
-          />
+          <AvatarImage src={post?.userInfo?.photoUrl} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>
       <div className="space-y-1">
-        <div className="space-x-1 flex items-center">
+        <div
+          className="space-x-1 flex items-center"
+          onClick={handleClickProfile}
+        >
           <p className="font-semibold text-lg">{post?.userInfo?.username}</p>
           <p className="text-sm text-slate-500">{post?.userInfo?.email}</p>
           <p className="text-sm text-slate-500">· {timeAgo}</p>

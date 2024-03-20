@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  getUser,
   signinController,
   signoutController,
   signupController,
@@ -22,4 +23,5 @@ const router = express.Router();
 router.post('/signup', upload.single('file'), signupController);
 router.post('/signin', signinController);
 router.post('/signout', signoutController);
+router.get('/:email', getUser);
 export default router;
