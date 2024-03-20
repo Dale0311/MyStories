@@ -11,9 +11,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import PostExcerpt from '../features/posts/PostExcerpt';
 import { useGetPostsQuery } from '../features/posts/postSlice';
-import useAuth from '@/hooks/useAuth';
 import { useGetUserQuery } from '../features/auth/authApiSlice';
 import { formatJoinedDateTime } from '../utils/formatDate';
 
@@ -27,7 +40,7 @@ const Profile = () => {
   let joinedDate;
   if (isLoading) return (content = <p>Loading...</p>);
   if (isSuccess) {
-    joinedDate = formatJoinedDateTime(userData.createdAt);
+    joinedDate = formatJoinedDateTime(userData?.createdAt);
     const { entities, ids } = postsData;
     const userPostsIds = ids.filter(
       (postId) => entities[postId].userId === userData?._id
@@ -62,22 +75,80 @@ const Profile = () => {
             </h2>
             <p className="text-slate-500">{userData?.email}</p>
           </div>
-          <div className="flex-1 flex justify-end">
-            <Dialog>
-              <DialogTrigger className="py-2 px-4 border border-slate-200 rounded-full font-semibold hover:bg-slate-200">
-                Edit Profile
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Are you absolutely sure?</DialogTitle>
-                  <DialogDescription>
-                    This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
-          </div>
+          {userData?.isOwner && (
+            <div className="flex-1 flex justify-end">
+              <Dialog>
+                <DialogTrigger className="py-2 px-4 border border-slate-200 rounded-full font-semibold hover:bg-slate-200">
+                  Edit Profile
+                </DialogTrigger>
+                <DialogContent>
+                  <Tabs defaultValue="account" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="account">Username</TabsTrigger>
+                      <TabsTrigger value="password">Password</TabsTrigger>
+                    </TabsList>
+
+                    {/* username */}
+                    <TabsContent value="account">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Username</CardTitle>
+                          <CardDescription>
+                            Make changes to your Username here. Click save when
+                            you're done.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                          <div className="space-y-1">
+                            <Label htmlFor="name">Current Username</Label>
+                            <input
+                              id="name"
+                              readOnly
+                              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm placeholder:text-slate-500 read-only:outline-none hover:cursor-not-allowed"
+                              defaultValue={userData?.username}
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label htmlFor="username">Username</Label>
+                            <Input id="username" />
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <Button>Save changes</Button>
+                        </CardFooter>
+                      </Card>
+                    </TabsContent>
+
+                    {/* password */}
+                    <TabsContent value="password">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Password</CardTitle>
+                          <CardDescription>
+                            Change your password here. After saving, you'll be
+                            logged out.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                          <div className="space-y-1">
+                            <Label htmlFor="current">Current password</Label>
+                            <Input id="current" type="password" />
+                          </div>
+                          <div className="space-y-1">
+                            <Label htmlFor="new">New password</Label>
+                            <Input id="new" type="password" />
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <Button>Save password</Button>
+                        </CardFooter>
+                      </Card>
+                    </TabsContent>
+                  </Tabs>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
         </div>
         <div className="border-y p-4">
           <div className="flex items-center space-x-1">

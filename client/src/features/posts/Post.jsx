@@ -106,10 +106,16 @@ const Post = () => {
           </div>
           <div className="space-y-2">
             <div className="space-x-1 flex items-center">
-              <Link className="font-semibold text-lg">
+              <Link
+                className="font-semibold text-lg"
+                to={`/${post.userInfo.email}`}
+              >
                 {post.userInfo.username}
               </Link>
-              <Link className="text-sm text-slate-500">
+              <Link
+                className="text-sm text-slate-500"
+                to={`/${post.userInfo.email}`}
+              >
                 {post.userInfo.email}
               </Link>
             </div>

@@ -6,6 +6,7 @@ import {
   signupController,
 } from '../controllers/auth.controller.js';
 import multer from 'multer';
+import { verifyJWT } from '../middleware/verifyJWT.js';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -23,5 +24,5 @@ const router = express.Router();
 router.post('/signup', upload.single('file'), signupController);
 router.post('/signin', signinController);
 router.post('/signout', signoutController);
-router.get('/:email', getUser);
+router.get('/:email', verifyJWT, getUser);
 export default router;

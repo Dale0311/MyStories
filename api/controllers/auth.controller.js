@@ -100,6 +100,11 @@ export const signoutController = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const { email } = req.params;
+  const { currentUser } = req;
+  let isOwner = false;
+  if (email === currentUser.email) {
+    isOwner = true;
+  }
   const user = await User.findOne({ email }).select('-password');
-  res.json(user._doc);
+  res.json({ ...user._doc, isOwner });
 };

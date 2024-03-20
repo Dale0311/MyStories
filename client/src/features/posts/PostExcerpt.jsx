@@ -58,7 +58,7 @@ const PostExcerpt = ({ postId }) => {
   };
   const handleClickProfile = (e) => {
     e.stopPropagation();
-    nav(post?.userInfo?.email);
+    nav(`/${post?.userInfo?.email}`);
   };
 
   return (

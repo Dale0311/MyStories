@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useSigninMutation } from './authApiSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from './authSlice';
 
@@ -55,6 +55,16 @@ const Signin = () => {
             />
           </div>
           {error && <p className="text-sm text-red-500">{error}</p>}
+          <p className="text-sm text-gray-500">
+            No account?
+            <Link
+              to={'/signup'}
+              className="hover:underline hover:cursor-pointer"
+            >
+              {' '}
+              sign up here
+            </Link>
+          </p>
           <Button
             onClick={handleSubmit}
             className="mt-6 bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md transition duration-300"

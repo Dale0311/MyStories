@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 import { X } from 'lucide-react';
 import { useSignupMutation } from './authApiSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   // states
@@ -217,6 +217,16 @@ const Signup = () => {
               ))}
             </ul>
           )}
+          <p className="text-sm text-gray-500">
+            already have an account?
+            <Link
+              to={'/signin'}
+              className="hover:underline hover:cursor-pointer"
+            >
+              {' '}
+              sign in here
+            </Link>
+          </p>
           <Button
             onClick={handleSubmit}
             className="mt-6 bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md transition duration-300"
