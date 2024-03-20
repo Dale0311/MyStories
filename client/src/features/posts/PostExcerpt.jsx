@@ -26,10 +26,8 @@ const PostExcerpt = ({ postId }) => {
     timeAgo = formatCommentDate(createdAt);
     const likeCounts = post.likes.length;
     commentsCount = post.comments.length;
-    const userLikeThePost = post.likes.findIndex(
-      (likeUserId) => likeUserId === userId
-    );
-    if (userLikeThePost === -1) {
+    const userLikeThePost = post.likes.includes(userId);
+    if (!userLikeThePost) {
       heartReact = (
         <>
           <div className="group-hover:bg-opacity-20 p-3 cursor-pointer rounded-full group-hover:bg-[#F91880]">
@@ -52,7 +50,7 @@ const PostExcerpt = ({ postId }) => {
 
   const handleClickLike = async (e) => {
     e.stopPropagation();
-    await interactToPost({ postId, userId: post.userId });
+    await interactToPost({ postId, userId });
   };
 
   const handleClickNav = () => {

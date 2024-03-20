@@ -57,10 +57,8 @@ const Post = () => {
         postUserId={post.userId}
       />
     ));
-    const userLikeThePost = post.likes.findIndex(
-      (likeUserId) => likeUserId === userId
-    );
-    if (userLikeThePost === -1) {
+    const userLikeThePost = post.likes.includes(userId);
+    if (!userLikeThePost) {
       heartReact = (
         <>
           <div className="group-hover:bg-opacity-20 p-3 cursor-pointer rounded-full group-hover:bg-[#F91880]">
