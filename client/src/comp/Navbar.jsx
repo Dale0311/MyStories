@@ -15,16 +15,27 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import useAuth from '@/hooks/useAuth';
+import { useSignoutMutation } from '../features/auth/authApiSlice';
+import { useDispatch } from 'react-redux';
+import { logout } from '../features/auth/authSlice';
 
 const Navbar = () => {
   const { photoUrl, username, email } = useAuth();
-  console.log(photoUrl);
+  const [signout] = useSignoutMutation();
+  const dispatch = useDispatch();
   const currPath = useLocation().pathname;
+
+  // classnames
   const activeClassName =
     'text-xl bg-slate-100 p-4 group rounded flex items-center space-x-2 font-semibold';
   const className =
     'text-xl hover:bg-slate-100 p-4 rounded flex items-center space-x-2';
-
+  const handleClickSignOut = async () => {
+    try {
+      await signout();
+      dispatch(logout());
+    } catch (error) {}
+  };
   return (
     <div className="flex flex-col p-4 justify-between h-full">
       <div className="flex flex-col mt-4 space-y-4">
@@ -72,7 +83,12 @@ const Navbar = () => {
           </div>
         </PopoverTrigger>
         <PopoverContent>
-          <Link className="hover:underline font-semibold">Sign out</Link>
+          <button
+            className="hover:underline font-semibold"
+            onClick={handleClickSignOut}
+          >
+            Sign out
+          </button>
         </PopoverContent>
       </Popover>
     </div>

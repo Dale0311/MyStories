@@ -90,3 +90,10 @@ export const signinController = async (req, res) => {
       .json({ accessToken });
   });
 };
+
+export const signoutController = async (req, res) => {
+  const { jwt } = req.cookies;
+  if (!jwt) return res.sendStatus(204);
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+  res.status(200).json({ message: 'cookie cleared' });
+};

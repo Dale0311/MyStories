@@ -22,7 +22,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
         return err?.data?.message;
       },
     }),
+    signout: builder.mutation({
+      query: () => ({
+        url: '/auth/signout',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useSignupMutation, useSigninMutation } = authApiSlice;
+export const { useSignupMutation, useSigninMutation, useSignoutMutation } =
+  authApiSlice;
