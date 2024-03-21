@@ -49,8 +49,8 @@ Bugs:
 - refactor bug current user <b>DONE: 3/18/2024</b>
 
 - fix all navigation btns <b>DONE: 3/20/2024</b>
-- fix number of posts shown in profile. make it the number of actual posts of the user
-- make profile route dynamic
+- fix number of posts shown in profile. make it the number of actual posts of the user <b>DONE: 3/20/2024</b>
+- make profile route dynamic <b>DONE: 3/20/2024</b>
   1. create endpoint for getUser (get all posts base on the user )
   2. refactor the profile component
 - make user able to like comment and reply to comment
