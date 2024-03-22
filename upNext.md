@@ -47,6 +47,7 @@ Bugs:
 - refactor routes <b>DONE: 3/14/2024</b>
 - refactor post excerpt <b>DONE: 3/17/2024</b>
 - refactor bug current user <b>DONE: 3/18/2024</b>
+- HAPPY FIESTA BRGY. DOLORES <b>DONE: 3/22/2024</b>
 
 - fix all navigation btns <b>DONE: 3/20/2024</b>
 - fix number of posts shown in profile. make it the number of actual posts of the user <b>DONE: 3/20/2024</b>
