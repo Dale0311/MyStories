@@ -108,3 +108,22 @@ export const getUser = async (req, res) => {
   const user = await User.findOne({ email }).select('-password');
   res.json({ ...user._doc, isOwner });
 };
+
+export const setNewUsername = async (req, res) => {
+  const { currentUser } = req;
+  const { email } = req.params;
+  const { username } = req.body;
+  if (!email || !username) return res.sendStatus(400);
+  if (currentUser.email !== email) return res.sendStatus(403);
+  const data = await User.findOneAndUpdate(
+    { email },
+    { username },
+    { new: true }
+  ).select('-password');
+
+  console.log(data);
+  const accessToken = jwt.sign({ ...data._doc }, process.env.ACCESS_TOKEN, {
+    expiresIn: '30m',
+  });
+  res.json({ accessToken });
+};

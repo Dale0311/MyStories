@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaArrowLeft } from 'react-icons/fa6';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MdDateRange } from 'react-icons/md';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -27,13 +27,23 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import PostExcerpt from '../features/posts/PostExcerpt';
 import { useGetPostsQuery } from '../features/posts/postSlice';
-import { useGetUserQuery } from '../features/auth/authApiSlice';
+import {
+  useGetUserQuery,
+  useSetNewUsernameMutation,
+} from '../features/auth/authApiSlice';
 import { formatJoinedDateTime } from '../utils/formatDate';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../features/auth/authSlice';
 
 const Profile = () => {
   const { email: profileEmail } = useParams();
   const { isSuccess, isLoading, data: postsData } = useGetPostsQuery();
+  const [setNewUsername] = useSetNewUsernameMutation();
+  const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
   const { data: userData } = useGetUserQuery(profileEmail);
+  const nav = useNavigate();
+  const dispatch = useDispatch();
 
   let content;
   let postsCount;
@@ -50,6 +60,23 @@ const Profile = () => {
       <PostExcerpt key={postId} postId={postId} />
     ));
   }
+
+  const handleClickSave = async () => {
+    if (!username) {
+      return setError('new username is required');
+    }
+    try {
+      const accessToken = await setNewUsername({
+        email: profileEmail,
+        username,
+      }).unwrap();
+      dispatch(setCredentials({ accessToken }));
+      nav('/');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="flex">
@@ -110,11 +137,20 @@ const Profile = () => {
                           </div>
                           <div className="space-y-1">
                             <Label htmlFor="username">Username</Label>
-                            <Input id="username" />
+                            <Input
+                              id="username"
+                              value={username}
+                              onChange={(e) => setUsername(e.target.value)}
+                            />
+                            {error && (
+                              <p className="text-xs text-red-500">{error}</p>
+                            )}
                           </div>
                         </CardContent>
                         <CardFooter>
-                          <Button>Save changes</Button>
+                          <Button onClick={handleClickSave}>
+                            Save changes
+                          </Button>
                         </CardFooter>
                       </Card>
                     </TabsContent>
@@ -167,8 +203,4 @@ const Profile = () => {
   );
 };
 
-// selecting posts for certain user
-// i can see two different approach
-// 1. in profile page use selector and pass the selectPosts and filter them by the userId
-// 2. to create query that gets all the post of certain user
 export default Profile;
