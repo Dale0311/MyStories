@@ -54,4 +54,15 @@ Bugs:
 - make profile route dynamic <b>DONE: 3/20/2024</b>
   1. create endpoint for getUser (get all posts base on the user )
   2. refactor the profile component
+  3. user can change their username and password
+
+### Note 03/24/2024
+with the lastest update of making the profile dynamic, I feel like it is time to move forward for a bit. I'm going to learn typescript and really to just expand my knowledge. I only knows the basic so far. with that said, there's a lot of ground to cover. maybe some time in the future I will comeback at this to do the future updates section and hopefully by that time I already have my first developer job! FIGHTING!!!
+
+#### Future updates
+
 - make user able to like comment and reply to comment
+- create a notification feature
+- refactor! XD
+- improve comment ui
+- create a show password feature in password fields

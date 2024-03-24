@@ -34,7 +34,7 @@ const Comment = ({ postId, comment, currentUserId, postUserId }) => {
         </div>
 
         <div className="whitespace-normal max-w-full">{comment.content}</div>
-        <div className="flex space-x-2">
+        {/* <div className="flex space-x-2">
           <div className="text-slate-500 flex space-x-1 items-center">
             <FaRegHeart />
             <p>22k</p>
@@ -43,7 +43,7 @@ const Comment = ({ postId, comment, currentUserId, postUserId }) => {
             <FaRegComment />
             <p>44</p>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex-1 flex justify-end items-start">
