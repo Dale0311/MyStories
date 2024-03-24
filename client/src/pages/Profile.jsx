@@ -3,14 +3,7 @@ import { FaArrowLeft } from 'react-icons/fa6';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { MdDateRange } from 'react-icons/md';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -29,19 +22,27 @@ import PostExcerpt from '../features/posts/PostExcerpt';
 import { useGetPostsQuery } from '../features/posts/postSlice';
 import {
   useGetUserQuery,
+  useSetNewPasswordMutation,
   useSetNewUsernameMutation,
+  useSignoutMutation,
 } from '../features/auth/authApiSlice';
 import { formatJoinedDateTime } from '../utils/formatDate';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '../features/auth/authSlice';
+import { logout, setCredentials } from '../features/auth/authSlice';
 
 const Profile = () => {
   const { email: profileEmail } = useParams();
   const { isSuccess, isLoading, data: postsData } = useGetPostsQuery();
-  const [setNewUsername] = useSetNewUsernameMutation();
-  const [username, setUsername] = useState('');
-  const [error, setError] = useState('');
   const { data: userData } = useGetUserQuery(profileEmail);
+  const [setNewUsername] = useSetNewUsernameMutation();
+  const [setNewPassword] = useSetNewPasswordMutation();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [errorUsername, setErrorUsername] = useState('');
+  const [errorPassword, setErrorPassword] = useState('');
+
   const nav = useNavigate();
   const dispatch = useDispatch();
 
@@ -61,9 +62,9 @@ const Profile = () => {
     ));
   }
 
-  const handleClickSave = async () => {
+  const handleClickSaveUsername = async () => {
     if (!username) {
-      return setError('new username is required');
+      return setErrorUsername('new username is required');
     }
     try {
       const accessToken = await setNewUsername({
@@ -73,7 +74,23 @@ const Profile = () => {
       dispatch(setCredentials({ accessToken }));
       nav('/');
     } catch (error) {
-      console.log(error);
+      setErrorUsername(error);
+    }
+  };
+
+  const handleClickSavePassword = async () => {
+    if (!password || !currentPassword) {
+      return setErrorPassword('new password is required');
+    }
+    try {
+      await setNewPassword({
+        email: profileEmail,
+        newPassword: password,
+        currentPassword,
+      }).unwrap();
+      dispatch(logout());
+    } catch (error) {
+      setErrorPassword(error);
     }
   };
 
@@ -142,13 +159,15 @@ const Profile = () => {
                               value={username}
                               onChange={(e) => setUsername(e.target.value)}
                             />
-                            {error && (
-                              <p className="text-xs text-red-500">{error}</p>
+                            {errorUsername && (
+                              <p className="text-xs text-red-500">
+                                {errorUsername}
+                              </p>
                             )}
                           </div>
                         </CardContent>
                         <CardFooter>
-                          <Button onClick={handleClickSave}>
+                          <Button onClick={handleClickSaveUsername}>
                             Save changes
                           </Button>
                         </CardFooter>
@@ -161,22 +180,42 @@ const Profile = () => {
                         <CardHeader>
                           <CardTitle>Password</CardTitle>
                           <CardDescription>
-                            Change your password here. After saving, you'll be
-                            logged out.
+                            Make changes to your Password here. You will be
+                            logged out after you successfully change your
+                            password
                           </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-2">
                           <div className="space-y-1">
                             <Label htmlFor="current">Current password</Label>
-                            <Input id="current" type="password" />
+                            <Input
+                              id="current"
+                              type="password"
+                              value={currentPassword}
+                              onChange={(e) =>
+                                setCurrentPassword(e.target.value)
+                              }
+                            />
                           </div>
                           <div className="space-y-1">
                             <Label htmlFor="new">New password</Label>
-                            <Input id="new" type="password" />
+                            <Input
+                              id="new"
+                              type="password"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                            />
+                            {errorPassword && (
+                              <p className="text-xs text-red-500">
+                                {errorPassword}
+                              </p>
+                            )}
                           </div>
                         </CardContent>
                         <CardFooter>
-                          <Button>Save password</Button>
+                          <Button onClick={handleClickSavePassword}>
+                            Save password
+                          </Button>
                         </CardFooter>
                       </Card>
                     </TabsContent>

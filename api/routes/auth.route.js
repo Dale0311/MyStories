@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getUser,
+  setNewPassword,
   setNewUsername,
   signinController,
   signoutController,
@@ -26,5 +27,5 @@ router.post('/signup', upload.single('file'), signupController);
 router.post('/signin', signinController);
 router.post('/signout', signoutController);
 router.get('/:email', verifyJWT, getUser);
-router.put('/:email', verifyJWT, setNewUsername);
+router.put('/:email', verifyJWT, setNewUsername, setNewPassword);
 export default router;

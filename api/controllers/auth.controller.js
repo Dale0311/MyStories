@@ -109,21 +109,59 @@ export const getUser = async (req, res) => {
   res.json({ ...user._doc, isOwner });
 };
 
-export const setNewUsername = async (req, res) => {
+export const setNewUsername = async (req, res, next) => {
   const { currentUser } = req;
   const { email } = req.params;
-  const { username } = req.body;
-  if (!email || !username) return res.sendStatus(400);
+  const { username, newPassword, currentPassword } = req.body;
+
+  // if email and passwords or username are empty then return error
+  if (!email && (!newPassword || !username || !currentPassword))
+    return res.status(400).json({ message: 'All fields are required' });
+
+  // is the currentUser is the same person?
   if (currentUser.email !== email) return res.sendStatus(403);
+
+  const foundUser = await User.findOne({ email });
+
+  // if email doesn't exist
+  if (!foundUser) return res.sendStatus(404);
+
+  // if the req is for changing the password
+  if (newPassword && currentPassword) {
+    req.foundUser = foundUser;
+    return next();
+  }
+
   const data = await User.findOneAndUpdate(
     { email },
     { username },
     { new: true }
   ).select('-password');
-
-  console.log(data);
   const accessToken = jwt.sign({ ...data._doc }, process.env.ACCESS_TOKEN, {
     expiresIn: '30m',
   });
   res.json({ accessToken });
+};
+
+export const setNewPassword = async (req, res) => {
+  const { newPassword, currentPassword } = req.body;
+  const { email } = req.params;
+  const { foundUser } = req;
+  const { jwt } = req.cookies;
+
+  const matchPassword = await bcrypt.compare(
+    currentPassword,
+    foundUser.password
+  );
+
+  // if password did not match
+  if (!matchPassword)
+    return res.status(400).json({ message: 'current password is incorrect' });
+
+  const hashPwd = await bcrypt.hash(newPassword, 10);
+  await User.findOneAndUpdate({ email }, { password: hashPwd });
+
+  if (!jwt) return res.sendStatus(204);
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+  res.status(200).json({ message: 'Password updated successfully' });
 };

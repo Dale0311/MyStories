@@ -15,7 +15,7 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: baseQuery,
   endpoints: (builder) => ({}),
-  tagTypes: ['Posts'],
+  tagTypes: ['Posts', 'User'],
 });
 
 export const { usePrefetch } = apiSlice;

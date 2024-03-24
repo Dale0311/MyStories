@@ -20,7 +20,7 @@ const Signin = () => {
 
   const handleSubmit = async () => {
     if (!canSubmit) {
-      setError('all fields are required');
+      setError('All fields are required');
       return;
     }
     setError('');

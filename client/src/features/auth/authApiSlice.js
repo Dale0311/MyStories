@@ -33,6 +33,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: `/auth/${email}`,
         method: 'GET',
       }),
+      providesTags: ['User'],
     }),
     setNewUsername: builder.mutation({
       query: ({ email, username }) => ({
@@ -40,7 +41,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { username },
         method: 'PUT',
       }),
-      invalidatesTags: ['Posts'],
+      transformErrorResponse: (err) => {
+        return err?.data?.message;
+      },
+      invalidatesTags: ['Posts', 'User'],
+    }),
+    setNewPassword: builder.mutation({
+      query: ({ email, newPassword, currentPassword }) => ({
+        url: `auth/${email}`,
+        body: { newPassword, currentPassword },
+        method: 'PUT',
+      }),
+      transformErrorResponse: (err) => {
+        return err?.data?.message;
+      },
     }),
   }),
 });
@@ -51,4 +65,5 @@ export const {
   useSignoutMutation,
   useGetUserQuery,
   useSetNewUsernameMutation,
+  useSetNewPasswordMutation,
 } = authApiSlice;
