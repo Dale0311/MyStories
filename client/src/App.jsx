@@ -14,6 +14,7 @@ import Signin from './features/auth/Signin';
 import Layout from './comp/Layout';
 import RequireAuth from './features/auth/RequireAuth';
 import NoAuthRequire from './features/auth/NoAuthRequire';
+import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,6 +55,10 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  if (process.env.NODE_ENV === 'production') {
+    disableReactDevTools();
+  }
+
   return <RouterProvider router={router} />;
 }
 
